@@ -1,16 +1,52 @@
-# React + Vite
+Sales Forecast Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Web application focused on helping companies visualize sales performance and forecast future revenue through an interactive dashboard.
 
-Currently, two official plugins are available:
+This project is being developed as a real-world front-end architecture practice using React and modern best practices.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Live Demo
 
-## React Compiler
+https://lucashenrique1908.github.io/Sales-Forecast-Dashboard/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Repository
 
-## Expanding the ESLint configuration
+https://github.com/lucashenrique1908/Sales-Forecast-Dashboard
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Project Goals
+
+The goal of this application is to simulate a corporate dashboard used by sales teams and managers to:
+
+Monitor past sales performance
+Visualize future sales projections
+Access detailed reports and insights
+Support data-driven decision making
+Current Status
+
+Sprint 0 completed ✅
+Project architecture and layout base are ready.
+
+Next steps:
+
+Dashboard widgets
+Charts & KPIs
+Real API integration
+Reports system
+Tech Stack
+
+Frontend
+
+React + Vite
+React Router DOM
+React Icons
+Context API
+
+Architecture
+
+Scalable folder structure
+Layout system (Sidebar + Header + Outlet)
+Service layer for API requests
+Custom hooks structure
+
+Styling
+
+CSS with responsive layout
