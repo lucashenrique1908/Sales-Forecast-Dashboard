@@ -155,12 +155,8 @@ img {
   padding: 0 0 40px;
 }
 
-.dashboard-shell {
-  width: min(1160px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 32px 0 0;
-}
-
+.app-loading,
+.app-error-boundary,
 .page-placeholder,
 .hero-panel,
 .insights-panel,
@@ -169,6 +165,40 @@ img {
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+.app-loading,
+.app-error-boundary {
+  width: min(560px, calc(100% - 32px));
+  margin: 48px auto;
+  padding: 32px;
+  border-radius: 24px;
+  text-align: center;
+}
+
+.app-loading__spinner {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 16px;
+  border: 4px solid rgba(148, 163, 184, 0.3);
+  border-top-color: #1d4ed8;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.app-error-boundary h1 {
+  margin: 12px 0;
+}
+
+.app-error-boundary p,
+.app-error-boundary span {
+  color: #64748b;
+}
+
+.dashboard-shell {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 0;
 }
 
 .page-placeholder {
@@ -343,6 +373,12 @@ img {
   place-items: center;
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 960px) {
   .app-layout {
     grid-template-columns: 1fr;
@@ -359,7 +395,6 @@ img {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .app-header,
   .hero-panel,
   .stats-grid {
     grid-template-columns: 1fr;

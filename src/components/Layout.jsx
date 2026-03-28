@@ -1,11 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { FiBarChart2, FiFileText, FiSettings } from 'react-icons/fi'
+import routesConfig from '../routes/routesConfig'
 
-const navigationItems = [
-  { to: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
-  { to: '/reports', label: 'Reports', icon: FiFileText },
-  { to: '/settings', label: 'Settings', icon: FiSettings },
-]
+const sidebarRoutes = routesConfig.filter((route) => route.showInSidebar)
 
 // The layout component defines the shared shell for all authenticated application pages.
 function Layout() {
@@ -21,16 +17,16 @@ function Layout() {
         </div>
 
         <nav className="app-sidebar__nav" aria-label="Primary navigation">
-          {navigationItems.map(({ to, label, icon: Icon }) => (
+          {sidebarRoutes.map(({ path, name, icon: Icon }) => (
             <NavLink
-              key={to}
-              to={to}
+              key={path}
+              to={`/${path}`}
               className={({ isActive }) =>
                 isActive ? 'app-navlink app-navlink--active' : 'app-navlink'
               }
             >
               <Icon />
-              <span>{label}</span>
+              <span>{name}</span>
             </NavLink>
           ))}
         </nav>
