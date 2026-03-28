@@ -1,12 +1,22 @@
-// routes: define a camada de navegacao da aplicacao e centraliza o mapeamento entre URLs e paginas.
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import HomePage from '../pages/HomePage'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import Layout from '../components/Layout'
+import DashboardPage from '../pages/DashboardPage'
+import ReportsPage from '../pages/ReportsPage'
+import SettingsPage from '../pages/SettingsPage'
+import NotFound from '../pages/NotFound'
 
+// A pasta routes centraliza o mapa de navegacao e protege a escalabilidade do frontend.
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

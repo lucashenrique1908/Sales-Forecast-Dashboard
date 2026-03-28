@@ -1,16 +1,25 @@
-// components: centraliza componentes reutilizaveis de interface para manter consistencia visual e facilitar escala.
-import { HiTrendingUp } from 'react-icons/hi'
+import { FiArrowUpRight } from 'react-icons/fi'
 
-function StatCard({ title, value, change, tone = 'positive' }) {
+// A pasta components concentra blocos reutilizaveis da interface para manter consistencia visual.
+function StatCard({ icon: Icon, title, value, subtitle, trend }) {
   return (
-    <article className={`stat-card stat-card--${tone}`}>
-      <div className="stat-card__icon">
-        <HiTrendingUp />
+    <article className="stat-card">
+      <div className="stat-card__header">
+        <div className="stat-card__icon">
+          <Icon />
+        </div>
+        <span className="stat-card__trend">{trend}</span>
       </div>
-      <div>
-        <span className="stat-card__label">{title}</span>
-        <strong className="stat-card__value">{value}</strong>
-        <p className="stat-card__change">{change}</p>
+
+      <div className="stat-card__body">
+        <p>{title}</p>
+        <strong>{value}</strong>
+        <span>{subtitle}</span>
+      </div>
+
+      <div className="stat-card__footer">
+        <span>Updated from forecast engine</span>
+        <FiArrowUpRight />
       </div>
     </article>
   )
