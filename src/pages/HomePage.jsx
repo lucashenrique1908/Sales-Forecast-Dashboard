@@ -1,49 +1,62 @@
-// pages: organiza telas de alto nivel que representam rotas e compoem a experiencia completa do usuario.
-import StatCard from '../components/StatCard'
-import useSalesSummary from '../hooks/useSalesSummary'
-import { fetchForecastSummary } from '../services/forecastService'
+import { FiDollarSign, FiShoppingCart, FiTrendingUp } from 'react-icons/fi'
 import BrandMark from '../assets/BrandMark'
+import StatCard from '../components/StatCard'
+import { useAppContext } from '../contexts/AppContext'
 
+const iconMap = {
+  revenue: FiDollarSign,
+  sales: FiShoppingCart,
+  growth: FiTrendingUp,
+}
+
+// pages: organiza telas de alto nivel que representam rotas e compoem a experiencia completa do usuario.
 function HomePage() {
-  const summary = useSalesSummary(fetchForecastSummary)
+  const { salesData, isLoading, error } = useAppContext()
+
+  if (isLoading || !salesData) {
+    return (
+      <main className="dashboard-shell">
+        <section className="hero-panel loading-panel">
+          <p>Loading forecast dashboard...</p>
+        </section>
+      </main>
+    )
+  }
 
   return (
-    <main className="dashboard-page">
+    <main className="dashboard-shell">
       <section className="hero-panel">
         <div>
           <p className="eyebrow">Sales Forecast Dashboard</p>
           <h1>Corporate forecasting with a scalable React foundation.</h1>
           <p className="hero-copy">
-            Estrutura inicial pronta para evoluir com autenticacao, modulos de
-            analytics e integracoes reais de API.
+            Sprint 1 delivers the first complete data flow from API service to dashboard UI
+            with loading and error states handled centrally.
           </p>
         </div>
         <BrandMark />
       </section>
 
       <section className="stats-grid" aria-label="Sales forecast highlights">
-        {summary.cards.map((card) => (
-          <StatCard key={card.title} {...card} />
+        {salesData.cards.map((card) => (
+          <StatCard key={card.id} icon={iconMap[card.id]} {...card} />
         ))}
       </section>
 
-      <section className="content-grid">
-        <article className="panel">
-          <p className="panel__title">Next milestone</p>
+      <section className="dashboard-detail-grid">
+        <article className="insights-panel">
+          <p className="eyebrow">Next milestone</p>
           <h2>Roadmap inicial</h2>
           <p>
-            Rotas, componentes reutilizaveis, hooks e servicos fake ja estao
-            separados para apoiar uma arquitetura corporativa e escalavel.
+            The project is now ready for richer charts, filters and additional forecast
+            scenarios on top of the shared context.
           </p>
         </article>
 
-        <article className="panel">
-          <p className="panel__title">API status</p>
-          <h2>{summary.statusLabel}</h2>
-          <p>
-            Os dados atuais sao simulados pelo servico em
-            <code> src/services/forecastService.js</code>.
-          </p>
+        <article className="insights-panel">
+          <p className="eyebrow">API status</p>
+          <h2>{error ? 'Check connection' : 'Connected via service layer'}</h2>
+          <p>The dashboard state is distributed globally through `AppContext`.</p>
         </article>
       </section>
     </main>

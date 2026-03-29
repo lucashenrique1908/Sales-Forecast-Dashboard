@@ -1,10 +1,19 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { useAppContext } from '../contexts/AppContext'
 import routesConfig from '../routes/routesConfig'
 
 const sidebarRoutes = routesConfig.filter((route) => route.showInSidebar)
 
+function getStatusLabel(isLoading, error) {
+  if (isLoading) return 'Loading forecast data'
+  if (error) return 'API connection needs attention'
+  return 'Dashboard data ready'
+}
+
 // The layout component defines the shared shell for all authenticated application pages.
 function Layout() {
+  const { appState, isLoading, error } = useAppContext()
+
   return (
     <div className="app-layout">
       <aside className="app-sidebar">
@@ -35,10 +44,10 @@ function Layout() {
       <div className="app-shell">
         <header className="app-header">
           <div>
-            <p className="app-header__eyebrow">Sprint 0</p>
-            <h1>Sales Forecast Dashboard</h1>
+            <p className="app-header__eyebrow">{appState.currentCycle}</p>
+            <h1>{appState.companyName}</h1>
           </div>
-          <span className="app-header__status">Architecture baseline ready</span>
+          <span className="app-header__status">{getStatusLabel(isLoading, error)}</span>
         </header>
 
         <main className="app-content">

@@ -1,20 +1,20 @@
-import { FiBarChart2, FiDollarSign, FiPercent, FiTarget } from 'react-icons/fi'
+import { FiBarChart2, FiDollarSign, FiShoppingCart, FiTrendingUp } from 'react-icons/fi'
 import BrandMark from '../assets/BrandMark'
 import StatCard from '../components/StatCard'
-import useForecastData from '../hooks/useForecastData'
+import { useAppContext } from '../contexts/AppContext'
 import { dashboardTheme } from '../styles/dashboardTheme'
 
 const iconMap = {
   revenue: FiDollarSign,
-  pipeline: FiTarget,
-  'win-rate': FiPercent,
+  sales: FiShoppingCart,
+  growth: FiTrendingUp,
 }
 
 // A pasta pages organiza telas completas conectando layout, dados e componentes de negocio.
 function Home() {
-  const { data, loading } = useForecastData()
+  const { salesData, isLoading } = useAppContext()
 
-  if (loading) {
+  if (isLoading || !salesData) {
     return (
       <main className="dashboard-shell">
         <section className="hero-panel loading-panel">
@@ -42,14 +42,14 @@ function Home() {
             <FiBarChart2 />
             <div>
               <span>Forecast Period</span>
-              <strong>{data.period}</strong>
+              <strong>{salesData.period}</strong>
             </div>
           </div>
         </div>
       </section>
 
       <section className="stats-grid">
-        {data.cards.map((card) => (
+        {salesData.cards.map((card) => (
           <StatCard
             key={card.id}
             icon={iconMap[card.id]}
@@ -68,7 +68,7 @@ function Home() {
         </div>
 
         <ul>
-          {data.highlights.map((highlight) => (
+          {salesData.highlights.map((highlight) => (
             <li key={highlight}>{highlight}</li>
           ))}
         </ul>
