@@ -1,7 +1,7 @@
 import { FiDollarSign, FiShoppingCart, FiTrendingUp } from 'react-icons/fi'
 import BrandMark from '../assets/BrandMark'
 import StatCard from '../components/StatCard'
-import { useAppContext } from '../contexts/AppContext'
+import { useDataContext } from '../contexts/DataContext'
 
 const iconMap = {
   revenue: FiDollarSign,
@@ -11,9 +11,9 @@ const iconMap = {
 
 // pages: organiza telas de alto nivel que representam rotas e compoem a experiencia completa do usuario.
 function HomePage() {
-  const { salesData, isLoading, error } = useAppContext()
+  const { data, loading, error } = useDataContext()
 
-  if (isLoading || !salesData) {
+  if (loading || !data) {
     return (
       <main className="dashboard-shell">
         <section className="hero-panel loading-panel">
@@ -38,7 +38,7 @@ function HomePage() {
       </section>
 
       <section className="stats-grid" aria-label="Sales forecast highlights">
-        {salesData.cards.map((card) => (
+        {data.cards.map((card) => (
           <StatCard key={card.id} icon={iconMap[card.id]} {...card} />
         ))}
       </section>
@@ -56,7 +56,7 @@ function HomePage() {
         <article className="insights-panel">
           <p className="eyebrow">API status</p>
           <h2>{error ? 'Check connection' : 'Connected via service layer'}</h2>
-          <p>The dashboard state is distributed globally through `AppContext`.</p>
+          <p>The dashboard data flows through `DataContext`, separate from UI shell state.</p>
         </article>
       </section>
     </main>

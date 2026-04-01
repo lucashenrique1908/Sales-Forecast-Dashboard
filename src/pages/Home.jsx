@@ -1,7 +1,7 @@
 import { FiBarChart2, FiDollarSign, FiShoppingCart, FiTrendingUp } from 'react-icons/fi'
 import BrandMark from '../assets/BrandMark'
 import StatCard from '../components/StatCard'
-import { useAppContext } from '../contexts/AppContext'
+import { useDataContext } from '../contexts/DataContext'
 import { dashboardTheme } from '../styles/dashboardTheme'
 
 const iconMap = {
@@ -12,9 +12,9 @@ const iconMap = {
 
 // A pasta pages organiza telas completas conectando layout, dados e componentes de negocio.
 function Home() {
-  const { salesData, isLoading } = useAppContext()
+  const { data, loading } = useDataContext()
 
-  if (isLoading || !salesData) {
+  if (loading || !data) {
     return (
       <main className="dashboard-shell">
         <section className="hero-panel loading-panel">
@@ -42,14 +42,14 @@ function Home() {
             <FiBarChart2 />
             <div>
               <span>Forecast Period</span>
-              <strong>{salesData.period}</strong>
+              <strong>{data.period}</strong>
             </div>
           </div>
         </div>
       </section>
 
       <section className="stats-grid">
-        {salesData.cards.map((card) => (
+        {data.cards.map((card) => (
           <StatCard
             key={card.id}
             icon={iconMap[card.id]}
@@ -68,7 +68,7 @@ function Home() {
         </div>
 
         <ul>
-          {salesData.highlights.map((highlight) => (
+          {data.highlights.map((highlight) => (
             <li key={highlight}>{highlight}</li>
           ))}
         </ul>

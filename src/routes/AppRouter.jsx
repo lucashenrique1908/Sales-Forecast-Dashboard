@@ -17,9 +17,11 @@ function AppRouter() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to={`/${defaultRoute.path}`} replace />} />
-            {appRoutes.map(({ path, element: Page }) => (
-              <Route key={path} path={path} element={<Page />} />
-            ))}
+            {appRoutes.map((route) => {
+              const RoutePage = route.element
+
+              return <Route key={route.path} path={route.path} element={<RoutePage />} />
+            })}
             {NotFoundPage ? <Route path="*" element={<NotFoundPage />} /> : null}
           </Route>
         </Routes>

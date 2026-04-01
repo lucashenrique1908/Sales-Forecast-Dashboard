@@ -1,9 +1,13 @@
+import { FORECAST_UI_COPY } from '../constants/forecast'
+import LoadingState from './ui/LoadingState'
+
 function Loading() {
   return (
-    <div className="app-loading" role="status" aria-live="polite">
-      <div className="app-loading__spinner" />
-      <p>Loading application...</p>
-    </div>
+    <LoadingState
+      compact
+      title={FORECAST_UI_COPY.appLoadingTitle}
+      description={FORECAST_UI_COPY.appLoadingDescription}
+    />
   )
 }
 

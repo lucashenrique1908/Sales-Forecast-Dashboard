@@ -1,22 +1,16 @@
 import ErrorBoundary from './components/ErrorBoundary'
-import AppProvider from './contexts/AppContext'
-import useForecastData from './hooks/useForecastData'
+import { DataProvider } from './contexts/DataContext'
+import { UIProvider } from './contexts/UIContext'
 import AppRouter from './routes/AppRouter'
-
-function AppContent() {
-  const dashboardState = useForecastData()
-
-  return (
-    <AppProvider dashboardState={dashboardState}>
-      <AppRouter />
-    </AppProvider>
-  )
-}
 
 function App() {
   return (
     <ErrorBoundary>
-      <AppContent />
+      <UIProvider>
+        <DataProvider>
+          <AppRouter />
+        </DataProvider>
+      </UIProvider>
     </ErrorBoundary>
   )
 }

@@ -1,12 +1,14 @@
 import { FiArrowUpRight } from 'react-icons/fi'
 
 // A pasta components concentra blocos reutilizaveis da interface para manter consistencia visual.
-function StatCard({ icon: Icon, title, value, subtitle, trend }) {
+function StatCard({ icon, title, value, subtitle, trend }) {
+  const IconComponent = icon
+
   return (
     <article className="stat-card">
       <div className="stat-card__header">
         <div className="stat-card__icon">
-          <Icon />
+          <IconComponent />
         </div>
         <span className="stat-card__trend">{trend}</span>
       </div>

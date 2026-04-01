@@ -1,55 +1,82 @@
-import { useEffect, useState } from 'react'
-import { getForecastSummary } from '../services/forecastService'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { fetchForecastSummary } from '../services/forecastService'
+import { selectForecastViewModel } from '../selectors/forecastSelectors'
+import {
+  getDefaultForecastFilters,
+  getDefaultForecastViewOptions,
+} from '../utils/forecast/forecastFilters'
 
-const initialState = {
-  data: null,
-  loading: true,
-  error: null,
-}
-
-// Hooks keep async state and side effects away from the visual components.
+// Data flow: service -> hook -> context -> UI. The hook only orchestrates async state
+// and delegates all heavy derivation to forecast selectors and formatter utilities.
 function useForecastData() {
-  const [forecastState, setForecastState] = useState(initialState)
+  const [rawData, setRawData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [filters, setFilters] = useState(() => getDefaultForecastFilters())
+  const [viewOptions, setViewOptions] = useState(() => getDefaultForecastViewOptions())
 
-  useEffect(() => {
-    let isMounted = true
+  const updateFilter = useCallback((name, value) => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      [name]: value,
+    }))
+  }, [])
 
-    async function loadForecastData() {
-      setForecastState((currentState) => ({
-        ...currentState,
-        loading: true,
-        error: null,
-      }))
+  const resetFilters = useCallback(() => {
+    setFilters(getDefaultForecastFilters())
+    setViewOptions(getDefaultForecastViewOptions())
+  }, [])
 
-      try {
-        const response = await getForecastSummary()
+  const updateViewOption = useCallback((name, value) => {
+    setViewOptions((currentOptions) => ({
+      ...currentOptions,
+      [name]: value,
+    }))
+  }, [])
 
-        if (!isMounted) return
+  const refetch = useCallback(async () => {
+    setLoading(true)
+    setError(null)
 
-        setForecastState({
-          data: response,
-          loading: false,
-          error: null,
-        })
-      } catch (error) {
-        if (!isMounted) return
+    try {
+      const nextRawData = await fetchForecastSummary()
+      setRawData(nextRawData)
+      return nextRawData
+    } catch (caughtError) {
+      const normalizedError =
+        caughtError instanceof Error
+          ? caughtError
+          : new Error('Unable to load forecast data.')
 
-        setForecastState({
-          data: null,
-          loading: false,
-          error: error instanceof Error ? error.message : 'Unable to load forecast data.',
-        })
-      }
-    }
-
-    loadForecastData()
-
-    return () => {
-      isMounted = false
+      setError(normalizedError)
+      setRawData([])
+      return null
+    } finally {
+      setLoading(false)
     }
   }, [])
 
-  return forecastState
+  useEffect(() => {
+    refetch()
+  }, [refetch])
+
+  const data = useMemo(() => {
+    if (error) return null
+
+    return selectForecastViewModel(rawData, filters, viewOptions)
+  }, [error, rawData, filters, viewOptions])
+
+  return {
+    data,
+    loading,
+    error,
+    filters,
+    viewOptions,
+    updateFilter,
+    updateViewOption,
+    resetFilters,
+    refetch,
+  }
 }
 
 export default useForecastData
